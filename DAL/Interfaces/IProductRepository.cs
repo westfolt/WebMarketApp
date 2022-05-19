@@ -7,7 +7,7 @@ namespace DAL.Interfaces
 {
     public interface IProductRepository:IRepository<Product>
     {
-        Task<IEnumerable<Product>> GetAllWithDetailAsync();
-        Task<Product> GetByIdWithDetailAsync(Guid id);
+        Task<IEnumerable<Product>> GetAllWithDetailsAsync();
+        Task<Product> GetByIdWithDetailsAsync(Guid id);
     }
 }

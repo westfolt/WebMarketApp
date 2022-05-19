@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.Data;
 using DAL.Entities;
+using DAL.Exceptions;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
 {
@@ -17,44 +20,79 @@ namespace DAL.Repositories
             _db = context;
         }
 
-        public Task<IEnumerable<Product>> GetAllAsync()
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _db.Products.ToListAsync();
         }
 
-        public Task<Product> GetByIdAsync(Guid id)
+        public async Task<Product> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _db.Products.FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public Task AddAsync(Product entity)
         {
-            throw new NotImplementedException();
+            if(entity == null)
+                throw new ArgumentNullException(nameof(entity), "Given product is null");
+
+            return AddAsyncInternal(entity);
+        }
+
+        private async Task AddAsyncInternal(Product entity)
+        {
+            var existsInDb = await _db.Products.AnyAsync(p => p.Id == entity.Id);
+
+            if (existsInDb)
+                throw new EntityAreadyExistsException("Product with this id already exists", nameof(entity));
+
+            await _db.Products.AddAsync(entity);
         }
 
         public void Delete(Product entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity), "Given product is null");
+
+            var itemToDelete = _db.Products.FirstOrDefault(p => p.Id == entity.Id);
+
+            if (itemToDelete == null)
+                throw new EntityNotFoundException("Product not found in DB", nameof(entity));
+
+            _db.Products.Remove(itemToDelete);
         }
 
-        public Task DeleteByIdAsync(Guid id)
+        public async Task DeleteByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var itemToDelete = await _db.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (itemToDelete == null)
+                throw new EntityNotFoundException("Product with this id not found", nameof(id));
+
+            _db.Products.Remove(itemToDelete);
         }
 
         public void Update(Product entity)
         {
-            throw new NotImplementedException();
+            var existsInDb = _db.Products.Any(p => p.Id == entity.Id);
+
+            if (!existsInDb)
+                throw new EntityNotFoundException("Product not found in DB", nameof(entity));
+
+            _db.Products.Update(entity);
         }
 
-        public Task<IEnumerable<Product>> GetAllWithDetailAsync()
+        public async Task<IEnumerable<Product>> GetAllWithDetailsAsync()
         {
-            throw new NotImplementedException();
+            return await _db.Products.Include(p => p.Category).Include(p => p.OrderDetails)
+                .ThenInclude(od => od.Order).ThenInclude(o => o.Customer)
+                .ThenInclude(c => c.Person).ToListAsync();
         }
 
-        public Task<Product> GetByIdWithDetailAsync(Guid id)
+        public async Task<Product> GetByIdWithDetailsAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _db.Products.Include(p => p.Category).Include(p => p.OrderDetails)
+                .ThenInclude(od => od.Order).ThenInclude(o => o.Customer)
+                .ThenInclude(c => c.Person).FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using DAL.Data;
 using DAL.Entities;
 using DAL.Interfaces;
+using System.Linq;
+using DAL.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
 {
@@ -17,44 +20,78 @@ namespace DAL.Repositories
             _db = context;
         }
 
-        public Task<IEnumerable<Customer>> GetAllAsync()
+        public async Task<IEnumerable<Customer>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _db.Customers.ToListAsync();
         }
 
-        public Task<Customer> GetByIdAsync(Guid id)
+        public async Task<Customer> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _db.Customers.FirstOrDefaultAsync(c=>c.Id == id);
         }
 
         public Task AddAsync(Customer entity)
         {
-            throw new NotImplementedException();
+            if(entity == null)
+                throw new ArgumentNullException(nameof(entity), "Given customer is null");
+
+            return AddInternalAsync(entity);
+        }
+
+        private async Task AddInternalAsync(Customer entity)
+        {
+            var existsInDb = await _db.Customers.AnyAsync(c=>c.Id == entity.Id);
+
+            if (existsInDb)
+                throw new EntityAreadyExistsException("Customer with this id already exists", nameof(entity));
+
+            await _db.Customers.AddAsync(entity);
         }
 
         public void Delete(Customer entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity), "Given customer is null");
+
+            var itemToDelete = _db.Customers.FirstOrDefault(c=>c.Id == entity.Id);
+            if (itemToDelete == null)
+                throw new EntityNotFoundException("Customer not found in DB", nameof(entity));
+
+            _db.Customers.Remove(itemToDelete);
         }
 
-        public Task DeleteByIdAsync(Guid id)
+        public async Task DeleteByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var itemToDelete = await _db.Customers.FirstOrDefaultAsync(c=>c.Id == id);
+
+            if (itemToDelete == null)
+                throw new EntityNotFoundException("Customer with this id not found", nameof(id));
+
+            _db.Customers.Remove(itemToDelete);
         }
 
         public void Update(Customer entity)
         {
-            throw new NotImplementedException();
+            var existsInDb = _db.Customers.Any(c => c.Id == entity.Id);
+
+            if (!existsInDb)
+                throw new EntityNotFoundException("Customer not found in DB", nameof(entity));
+
+            _db.Customers.Update(entity);
         }
 
-        public Task<IEnumerable<Customer>> GetAllWithDetailsAsync()
+        public async Task<IEnumerable<Customer>> GetAllWithDetailsAsync()
         {
-            throw new NotImplementedException();
+            return await _db.Customers.Include(c => c.Person).Include(c => c.Orders)
+                .ThenInclude(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Category)
+                .ToListAsync();
         }
 
-        public Task<Customer> GetByIdWithDetailsAsync(Guid id)
+        public async Task<Customer> GetByIdWithDetailsAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _db.Customers.Include(c => c.Person).Include(c => c.Orders)
+                .ThenInclude(o => o.OrderDetails).ThenInclude(od => od.Product)
+                .ThenInclude(p => p.Category).FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

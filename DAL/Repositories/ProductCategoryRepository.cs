@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.Data;
 using DAL.Entities;
+using DAL.Exceptions;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
 {
@@ -17,44 +20,80 @@ namespace DAL.Repositories
             _db = context;
         }
 
-        public Task<IEnumerable<ProductCategory>> GetAllAsync()
+        public async Task<IEnumerable<ProductCategory>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _db.ProductCategories.ToListAsync();
         }
 
-        public Task<ProductCategory> GetByIdAsync(Guid id)
+        public async Task<ProductCategory> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _db.ProductCategories.FirstOrDefaultAsync(pc => pc.Id == id);
         }
 
         public Task AddAsync(ProductCategory entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity), "Given product category is null");
+
+            return AddInternalAsync(entity);
+        }
+
+        private async Task AddInternalAsync(ProductCategory entity)
+        {
+            var existsInDb = await _db.ProductCategories.AnyAsync(pc => pc.Id == entity.Id);
+
+            if (existsInDb)
+                throw new EntityAreadyExistsException("Product category with this id already exist", nameof(entity));
+
+            await _db.ProductCategories.AddAsync(entity);
         }
 
         public void Delete(ProductCategory entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity), "Given product category is null");
+
+            var itemToDelete = _db.ProductCategories.FirstOrDefault(pc => pc.Id == entity.Id);
+            if (itemToDelete == null)
+                throw new EntityNotFoundException("Product category not found in DB", nameof(entity));
+
+            _db.ProductCategories.Remove(itemToDelete);
         }
 
-        public Task DeleteByIdAsync(Guid id)
+        public async Task DeleteByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var itemToDelete = await _db.ProductCategories.FirstOrDefaultAsync(pc => pc.Id == id);
+
+            if (itemToDelete == null)
+                throw new EntityNotFoundException("Product category with this id not found", nameof(id));
+
+            _db.ProductCategories.Remove(itemToDelete);
         }
 
         public void Update(ProductCategory entity)
         {
-            throw new NotImplementedException();
+            var existsInDb = _db.ProductCategories.Any(pc => pc.Id == entity.Id);
+
+            if (!existsInDb)
+                throw new EntityNotFoundException("Product category not found in DB", nameof(entity));
+
+            _db.ProductCategories.Update(entity);
         }
 
-        public Task<IEnumerable<ProductCategory>> GetAllWithDetailsAsync()
+        public async Task<IEnumerable<ProductCategory>> GetAllWithDetailsAsync()
         {
-            throw new NotImplementedException();
+            return await _db.ProductCategories.Include(pc => pc.Products)
+                .ThenInclude(p => p.OrderDetails).ThenInclude(od => od.Order)
+                .ThenInclude(o => o.Customer).ThenInclude(c => c.Person)
+                .ToListAsync();
         }
 
-        public Task<ProductCategory> GetByIdWithDetailsAsync(Guid id)
+        public async Task<ProductCategory> GetByIdWithDetailsAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _db.ProductCategories.Include(pc => pc.Products)
+                .ThenInclude(p => p.OrderDetails).ThenInclude(od => od.Order)
+                .ThenInclude(o => o.Customer).ThenInclude(c => c.Person)
+                .FirstOrDefaultAsync(pc => pc.Id == id);
         }
     }
 }
