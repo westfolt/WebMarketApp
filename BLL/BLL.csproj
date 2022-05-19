@@ -10,12 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Exceptions\" />
-    <Folder Include="Infrastructure\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj" />
   </ItemGroup>
 

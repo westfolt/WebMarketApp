@@ -9,16 +9,18 @@ namespace DAL.Data
 {
     public class WebMarketDbContext:DbContext
     {
-        //public WebMarketDbContext(DbContextOptions<WebMarketDbContext> options):base(options)
+        public WebMarketDbContext(DbContextOptions<WebMarketDbContext> options) : base(options)
+        {
+
+        }
+
+        //public WebMarketDbContext()
         //{ }
 
-        public WebMarketDbContext()
-        { }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite("Data Source = webMarket.db");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlite("Data Source = webMarket.db");
+        //}
 
         public DbSet<Person> Persons { get; set; }
         public DbSet<Customer> Customers { get; set; }

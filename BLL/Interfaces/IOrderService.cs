@@ -8,10 +8,11 @@ namespace BLL.Interfaces
 {
     public interface IOrderService:ICrud<OrderDto>
     {
-        Task AddProductAsync(int productId, int orderId, int quantity);
-        Task DeleteProductAsync(int productId, int orderId, int quantity);
-        Task<IEnumerable<OrderDetailDto>> GetOrderDetailsAsync(int orderId);
-        Task<decimal> TotalToPay(int orderId);
-        Task<bool> ChangeOrderStatus(int orderId, string newStatus);
+        Task AddProductAsync(Guid productId, Guid orderId, int quantity);
+        Task DeleteProductAsync(Guid productId, Guid orderId, int quantity);
+        Task<IEnumerable<OrderDetailDto>> GetOrderDetailsAsync(Guid orderId);
+        Task<decimal> TotalToPay(Guid orderId);
+        Task<bool> ChangeOrderStatus(Guid orderId, OrderStatusDto newStatus);
+        Task<IEnumerable<OrderDto>> GetOrdersForPeriodAsync(DateTime startDate, DateTime endDate);
     }
 }

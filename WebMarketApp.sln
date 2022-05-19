@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "BLL\BLL.csproj", "{22A2D647-2223-4921-B4ED-B9F67E9992C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMarketTests", "WebMarketTests\WebMarketTests.csproj", "{00E7176E-02F4-43AF-A827-F4BED3182A03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,9 +20,12 @@ Global
 		{25E29703-7D70-4E1E-BCCF-40544B47D562}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25E29703-7D70-4E1E-BCCF-40544B47D562}.Release|Any CPU.Build.0 = Release|Any CPU
 		{22A2D647-2223-4921-B4ED-B9F67E9992C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22A2D647-2223-4921-B4ED-B9F67E9992C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22A2D647-2223-4921-B4ED-B9F67E9992C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22A2D647-2223-4921-B4ED-B9F67E9992C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00E7176E-02F4-43AF-A827-F4BED3182A03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00E7176E-02F4-43AF-A827-F4BED3182A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00E7176E-02F4-43AF-A827-F4BED3182A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00E7176E-02F4-43AF-A827-F4BED3182A03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

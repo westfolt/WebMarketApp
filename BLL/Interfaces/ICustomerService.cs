@@ -8,6 +8,6 @@ namespace BLL.Interfaces
 {
     public interface ICustomerService : ICrud<CustomerDto>
     {
-        Task<IEnumerable<CustomerDto>> GetCustomersByProductAsync(int productId);
+        Task<IEnumerable<CustomerDto>> GetCustomersByProductAsync(Guid productId);
     }
 }

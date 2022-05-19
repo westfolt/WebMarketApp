@@ -8,7 +8,7 @@ namespace BLL.Interfaces
     public interface ICrud<TDto> where TDto : class
     {
         Task<IEnumerable<TDto>> GetAllAsync();
-        Task<TDto> GetByIdAsync();
+        Task<TDto> GetByIdAsync(Guid id);
         Task<int> AddAsync(TDto entity);
         Task<bool> UpdateAsync(TDto entity);
         Task<bool> DeleteAsync(TDto entity);
