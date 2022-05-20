@@ -10,8 +10,8 @@ namespace BLL.Interfaces
     {
         Task<IEnumerable<ProductDto>> GetByFilterAsync(FilterSearchDto filterSearch);
         Task<IEnumerable<ProductCategoryDto>> GetAllProductCategoriesAsync();
-        Task<int> AddCategoryAsync(ProductCategoryDto entity);
-        Task<bool> UpdateCategoryAsync(ProductCategoryDto entity);
-        Task<bool> DeleteCategoryAsync(ProductCategoryDto entity);
+        Task<Guid> AddCategoryAsync(ProductCategoryDto entity);
+        Task UpdateCategoryAsync(ProductCategoryDto entity);
+        Task DeleteCategoryAsync(Guid entityId);
     }
 }

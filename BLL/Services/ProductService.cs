@@ -1,62 +1,181 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using BLL.Dto;
+using BLL.Exceptions;
 using BLL.Interfaces;
+using BLL.Validation;
+using DAL.Entities;
+using DAL.Interfaces;
 
 namespace BLL.Services
 {
     public class ProductService:IProductService
     {
-        public Task<IEnumerable<ProductDto>> GetAllAsync()
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public ProductService(IMapper mapper, IUnitOfWork unitOfWork)
         {
-            throw new NotImplementedException();
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
-        public Task<ProductDto> GetByIdAsync(Guid id)
+        public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var takenFromDb = await _unitOfWork.ProductRepository.GetAllWithDetailsAsync();
+                var mapped = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(takenFromDb);
+                return mapped;
+            }
+            catch (Exception ex)
+            {
+                throw new WebMarketException(ex.Message);
+            }
         }
 
-        public Task<int> AddAsync(ProductDto entity)
+        public async Task<ProductDto> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var takenFromDb = await _unitOfWork.ProductRepository.GetByIdWithDetailsAsync(id);
+                var mapped = _mapper.Map<Product, ProductDto>(takenFromDb);
+                return mapped;
+            }
+            catch (Exception ex)
+            {
+                throw new WebMarketException(ex.Message);
+            }
         }
 
-        public Task<bool> UpdateAsync(ProductDto entity)
+        public async Task<Guid> AddAsync(ProductDto entity)
         {
-            throw new NotImplementedException();
+            if (!DtoValidationHelper.TryValidate(entity, out var validationErrors))
+                throw new WebMarketException(validationErrors, nameof(entity));
+
+            try
+            {
+                var mapped = _mapper.Map<ProductDto, Product>(entity);
+                await _unitOfWork.ProductRepository.AddAsync(mapped);
+                await _unitOfWork.SaveAsync();
+                return mapped.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new WebMarketException(ex.Message);
+            }
         }
 
-        public Task<bool> DeleteAsync(ProductDto entity)
+        public async Task UpdateAsync(ProductDto entity)
         {
-            throw new NotImplementedException();
+            if (!DtoValidationHelper.TryValidate(entity, out var validationErrors))
+                throw new WebMarketException(validationErrors, nameof(entity));
+
+            try
+            {
+                var mapped = _mapper.Map<ProductDto, Product>(entity);
+                _unitOfWork.ProductRepository.Update(mapped);
+                await _unitOfWork.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new WebMarketException(ex.Message);
+            }
         }
 
-        public Task<IEnumerable<ProductDto>> GetByFilterAsync(FilterSearchDto filterSearch)
+        public async Task DeleteAsync(Guid entityId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _unitOfWork.ProductRepository.DeleteByIdAsync(entityId);
+                await _unitOfWork.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new WebMarketException(ex.Message);
+            }
         }
 
-        public Task<IEnumerable<ProductCategoryDto>> GetAllProductCategoriesAsync()
+        public async Task<IEnumerable<ProductDto>> GetByFilterAsync(FilterSearchDto filterSearch)
         {
-            throw new NotImplementedException();
+            if(filterSearch == null)
+                throw new WebMarketException("Search filter is null",nameof(filterSearch));
+
+            var takenFromDb = await GetAllAsync();
+            if (filterSearch.CategoryId != null)
+                takenFromDb = takenFromDb.Where(p => p.ProductCategoryId == filterSearch.CategoryId);
+            if (filterSearch.MinPrice != null)
+                takenFromDb = takenFromDb.Where(p => p.Price >= filterSearch.MinPrice);
+            if (filterSearch.MaxPrice != null)
+                takenFromDb = takenFromDb.Where(p => p.Price <= filterSearch.MaxPrice);
+
+            return takenFromDb;
         }
 
-        public Task<int> AddCategoryAsync(ProductCategoryDto entity)
+        public async Task<IEnumerable<ProductCategoryDto>> GetAllProductCategoriesAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var takenFromDb = await _unitOfWork.ProductCategoryRepository.GetAllAsync();
+                var mapped = _mapper.Map<IEnumerable<ProductCategory>, IEnumerable<ProductCategoryDto>>(takenFromDb);
+                return mapped;
+            }
+            catch (Exception ex)
+            {
+                throw new WebMarketException(ex.Message);
+            }
         }
 
-        public Task<bool> UpdateCategoryAsync(ProductCategoryDto entity)
+        public async Task<Guid> AddCategoryAsync(ProductCategoryDto entity)
         {
-            throw new NotImplementedException();
+            if (!DtoValidationHelper.TryValidate(entity, out var validationErrors))
+                throw new WebMarketException(validationErrors, nameof(entity));
+
+            try
+            {
+                var mapped = _mapper.Map<ProductCategoryDto, ProductCategory>(entity);
+                await _unitOfWork.ProductCategoryRepository.AddAsync(mapped);
+                await _unitOfWork.SaveAsync();
+                return mapped.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new WebMarketException(ex.Message);
+            }
         }
 
-        public Task<bool> DeleteCategoryAsync(ProductCategoryDto entity)
+        public async Task UpdateCategoryAsync(ProductCategoryDto entity)
         {
-            throw new NotImplementedException();
+            if (!DtoValidationHelper.TryValidate(entity, out var validationErrors))
+                throw new WebMarketException(validationErrors, nameof(entity));
+
+            try
+            {
+                var mapped = _mapper.Map<ProductCategoryDto, ProductCategory>(entity);
+                _unitOfWork.ProductCategoryRepository.Update(mapped);
+                await _unitOfWork.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new WebMarketException(ex.Message);
+            }
+        }
+
+        public async Task DeleteCategoryAsync(Guid entityId)
+        {
+            try
+            {
+                await _unitOfWork.ProductCategoryRepository.DeleteByIdAsync(entityId);
+                await _unitOfWork.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new WebMarketException(ex.Message);
+            }
         }
     }
 }

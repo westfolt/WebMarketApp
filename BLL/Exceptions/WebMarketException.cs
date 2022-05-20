@@ -5,6 +5,7 @@ using System.Text;
 
 namespace BLL.Exceptions
 {
+    [Serializable]
     public class WebMarketException:Exception
     {
         private readonly string _parameterCausedException;

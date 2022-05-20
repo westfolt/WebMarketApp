@@ -6,7 +6,7 @@ namespace BLL.Dto
 {
     public class CustomerActivityDto
     {
-        public int CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
         public string CustomerName { get; set; }
         public decimal OrderSum { get; set; }
     }

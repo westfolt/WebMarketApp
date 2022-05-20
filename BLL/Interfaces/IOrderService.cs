@@ -12,7 +12,7 @@ namespace BLL.Interfaces
         Task DeleteProductAsync(Guid productId, Guid orderId, int quantity);
         Task<IEnumerable<OrderDetailDto>> GetOrderDetailsAsync(Guid orderId);
         Task<decimal> TotalToPay(Guid orderId);
-        Task<bool> ChangeOrderStatus(Guid orderId, OrderStatusDto newStatus);
+        Task ChangeOrderStatus(Guid orderId, OrderStatusDto newStatus);
         Task<IEnumerable<OrderDto>> GetOrdersForPeriodAsync(DateTime startDate, DateTime endDate);
     }
 }

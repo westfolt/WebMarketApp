@@ -9,8 +9,8 @@ namespace BLL.Interfaces
     {
         Task<IEnumerable<TDto>> GetAllAsync();
         Task<TDto> GetByIdAsync(Guid id);
-        Task<int> AddAsync(TDto entity);
-        Task<bool> UpdateAsync(TDto entity);
-        Task<bool> DeleteAsync(TDto entity);
+        Task<Guid> AddAsync(TDto entity);
+        Task UpdateAsync(TDto entity);
+        Task DeleteAsync(Guid entityId);
     }
 }

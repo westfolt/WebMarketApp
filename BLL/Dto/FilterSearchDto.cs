@@ -6,7 +6,7 @@ namespace BLL.Dto
 {
     public class FilterSearchDto
     {
-        public int? CategoryId { get; set; }
+        public Guid? CategoryId { get; set; }
         public int? MinPrice { get; set; }
         public int? MaxPrice { get; set; }
     }

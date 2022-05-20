@@ -11,7 +11,7 @@ namespace BLL.Interfaces
         Task<IEnumerable<ProductDto>> GetMostPopularProductsAsync(int productCount);
         Task<IEnumerable<ProductDto>> GetMostPopularProductsForCustomerAsync(int productCount, Guid customerId);
 
-        Task<IEnumerable<CustomerActivityDto>> GetMostValuableCustomersAsync(Guid customerCount, DateTime startDate,
+        Task<IEnumerable<CustomerActivityDto>> GetMostValuableCustomersAsync(int customerCount, DateTime startDate,
             DateTime endDate);
         Task<decimal> GetIncomeOfCategoryInPeriod(Guid categoryId, DateTime startDate, DateTime endDate);
     }

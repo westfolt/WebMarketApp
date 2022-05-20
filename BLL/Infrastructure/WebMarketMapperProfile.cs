@@ -38,6 +38,7 @@ namespace BLL.Infrastructure
                 .ForMember(dto => dto.Phone, c => c.MapFrom(x => x.Person.Phone))
                 .ForMember(dto => dto.OrdersIds, c => c.MapFrom(x => x.Orders.Select(o => o.Id)))
                 .ReverseMap();
+            
         }
     }
 }
