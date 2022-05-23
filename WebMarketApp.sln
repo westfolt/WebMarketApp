@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "BLL\BLL.csproj", "{2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebMarketTests", "WebMarketTests\WebMarketTests.csproj", "{00E7176E-02F4-43AF-A827-F4BED3182A03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{41744220-0688-479F-BAD3-8ED6F6A4CA12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{41744220-0688-479F-BAD3-8ED6F6A4CA12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,7 +26,6 @@ Global
 		{22A2D647-2223-4921-B4ED-B9F67E9992C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22A2D647-2223-4921-B4ED-B9F67E9992C5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{00E7176E-02F4-43AF-A827-F4BED3182A03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00E7176E-02F4-43AF-A827-F4BED3182A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00E7176E-02F4-43AF-A827-F4BED3182A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00E7176E-02F4-43AF-A827-F4BED3182A03}.Release|Any CPU.Build.0 = Release|Any CPU
 		{41744220-0688-479F-BAD3-8ED6F6A4CA12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
