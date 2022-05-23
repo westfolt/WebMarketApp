@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
@@ -17,7 +16,7 @@ namespace BLL.Validation
 
             var validationResult = new List<ValidationResult>();
             var context = new ValidationContext(objectToValidate);
-             var errors = new StringBuilder();
+            var errors = new StringBuilder();
 
             if (!Validator.TryValidateObject(objectToValidate, context, validationResult, true))
             {

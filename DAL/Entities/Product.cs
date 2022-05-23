@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace DAL.Entities
 {
-    public class Product:BaseEntity
+    public class Product : BaseEntity
     {
         public Guid ProductCategoryId { get; set; }
         public ProductCategory Category { get; set; }

@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using BLL.Dto;
 using BLL.Interfaces;
 using DAL.Entities;
 using DAL.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class StatisticService:IStatisticService
+    public class StatisticService : IStatisticService
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -56,7 +55,7 @@ namespace BLL.Services
                     (o, od) => new { o.Customer, Payed = od.DiscountUnitPrice * od.Quantity })
                 .GroupBy(n => n.Customer)
                 .Select(n => new CustomerActivityDto()
-                    { CustomerId = n.Key.Id, CustomerName = $"{n.Key.Person.Name} {n.Key.Person.Surname}", OrderSum = n.Sum(m => m.Payed) })
+                { CustomerId = n.Key.Id, CustomerName = $"{n.Key.Person.Name} {n.Key.Person.Surname}", OrderSum = n.Sum(m => m.Payed) })
                 .OrderByDescending(n => n.OrderSum)
                 .Take(customerCount);
         }

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using BLL.Dto;
 using DAL.Entities;
+using System.Linq;
 
 namespace BLL.Infrastructure
 {
-    public class WebMarketMapperProfile:Profile
+    public class WebMarketMapperProfile : Profile
     {
         public WebMarketMapperProfile()
         {
@@ -38,7 +35,7 @@ namespace BLL.Infrastructure
                 .ForMember(dto => dto.Phone, c => c.MapFrom(x => x.Person.Phone))
                 .ForMember(dto => dto.OrdersIds, c => c.MapFrom(x => x.Orders.Select(o => o.Id)))
                 .ReverseMap();
-            
+
         }
     }
 }

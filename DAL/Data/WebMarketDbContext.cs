@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
-using DAL.Entities;
+﻿using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Data
 {
-    public class WebMarketDbContext:DbContext
+    public class WebMarketDbContext : DbContext
     {
         public WebMarketDbContext(DbContextOptions<WebMarketDbContext> options) : base(options)
         {

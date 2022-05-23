@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using DAL.Data;
+﻿using DAL.Data;
 using DAL.Entities;
-using DAL.Interfaces;
-using System.Linq;
 using DAL.Exceptions;
+using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class CustomerRepository:ICustomerRepository
+    public class CustomerRepository : ICustomerRepository
     {
         private readonly WebMarketDbContext _db;
 
@@ -27,12 +26,12 @@ namespace DAL.Repositories
 
         public async Task<Customer> GetByIdAsync(Guid id)
         {
-            return await _db.Customers.FirstOrDefaultAsync(c=>c.Id == id);
+            return await _db.Customers.FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public Task AddAsync(Customer entity)
         {
-            if(entity == null)
+            if (entity == null)
                 throw new ArgumentNullException(nameof(entity), "Given customer is null");
 
             return AddInternalAsync(entity);
@@ -40,7 +39,7 @@ namespace DAL.Repositories
 
         private async Task AddInternalAsync(Customer entity)
         {
-            var existsInDb = await _db.Customers.AnyAsync(c=>c.Id == entity.Id);
+            var existsInDb = await _db.Customers.AnyAsync(c => c.Id == entity.Id);
 
             if (existsInDb)
                 throw new EntityAreadyExistsException("Customer with this id already exists", nameof(entity));
@@ -53,7 +52,7 @@ namespace DAL.Repositories
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity), "Given customer is null");
 
-            var itemToDelete = _db.Customers.FirstOrDefault(c=>c.Id == entity.Id);
+            var itemToDelete = _db.Customers.FirstOrDefault(c => c.Id == entity.Id);
             if (itemToDelete == null)
                 throw new EntityNotFoundException("Customer not found in DB", nameof(entity));
 
@@ -62,7 +61,7 @@ namespace DAL.Repositories
 
         public async Task DeleteByIdAsync(Guid id)
         {
-            var itemToDelete = await _db.Customers.FirstOrDefaultAsync(c=>c.Id == id);
+            var itemToDelete = await _db.Customers.FirstOrDefaultAsync(c => c.Id == id);
 
             if (itemToDelete == null)
                 throw new EntityNotFoundException("Customer with this id not found", nameof(id));

@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DAL.Data;
+﻿using DAL.Data;
 using DAL.Entities;
 using DAL.Exceptions;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class PersonRepository:IPersonRepository
+    public class PersonRepository : IPersonRepository
     {
         private readonly WebMarketDbContext _db;
 
@@ -32,7 +31,7 @@ namespace DAL.Repositories
 
         public Task AddAsync(Person entity)
         {
-            if(entity == null)
+            if (entity == null)
                 throw new ArgumentNullException(nameof(entity), "Given person is null");
 
             return AddInternalAsync(entity);
@@ -40,7 +39,7 @@ namespace DAL.Repositories
 
         private async Task AddInternalAsync(Person entity)
         {
-            var existsInDb = await _db.Persons.AnyAsync(p=>p.Id == entity.Id);
+            var existsInDb = await _db.Persons.AnyAsync(p => p.Id == entity.Id);
 
             if (existsInDb)
                 throw new EntityAreadyExistsException("Person with this id already exists", nameof(entity));

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DAL.Entities
 {
-    public class OrderDetail:BaseEntity
+    public class OrderDetail : BaseEntity
     {
         public Guid OrderId { get; set; }
         public Guid ProductId { get; set; }

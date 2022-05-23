@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using DAL.Interfaces;
+﻿using DAL.Interfaces;
 using DAL.Repositories;
+using System;
+using System.Threading.Tasks;
 
 namespace DAL.Data
 {

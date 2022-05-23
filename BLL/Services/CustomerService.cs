@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using BLL.Dto;
-using BLL.Interfaces;
-using DAL.Interfaces;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using System.Linq;
 using BLL.Exceptions;
+using BLL.Interfaces;
 using BLL.Validation;
 using DAL.Entities;
+using DAL.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class CustomerService:ICustomerService
+    public class CustomerService : ICustomerService
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -56,7 +53,7 @@ namespace BLL.Services
 
         public async Task<Guid> AddAsync(CustomerDto entity)
         {
-            if(!DtoValidationHelper.TryValidate(entity, out var validationErrors))
+            if (!DtoValidationHelper.TryValidate(entity, out var validationErrors))
             {
                 throw new WebMarketException(validationErrors, nameof(entity));
             }
@@ -106,7 +103,7 @@ namespace BLL.Services
             }
         }
 
-        public async Task<IEnumerable<CustomerDto>> GetCustomersByProductAsync(Guid productId)
+        public async Task<IEnumerable<CustomerDto>> GetCustomersByProductIdAsync(Guid productId)
         {
             try
             {

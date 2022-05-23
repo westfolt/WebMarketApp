@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DAL.Entities
 {
-    public class Order:BaseEntity
+    public class Order : BaseEntity
     {
         public Guid CustomerId { get; set; }
         public Customer Customer { get; set; }

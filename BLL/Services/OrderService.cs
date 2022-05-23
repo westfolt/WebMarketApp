@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using BLL.Dto;
 using BLL.Exceptions;
 using BLL.Interfaces;
 using BLL.Validation;
 using DAL.Entities;
 using DAL.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class OrderService:IOrderService
+    public class OrderService : IOrderService
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -186,14 +181,14 @@ namespace BLL.Services
         public async Task DeleteProductAsync(Guid productId, Guid orderId, int quantity)
         {
             var order = await _unitOfWork.OrderRepository.GetByIdWithDetailsAsync(orderId);
-            if(order == null)
+            if (order == null)
                 throw new WebMarketException("Order for update does not exist");
 
-            var orderDetail = order.OrderDetails.FirstOrDefault(od=>od.ProductId == productId);
+            var orderDetail = order.OrderDetails.FirstOrDefault(od => od.ProductId == productId);
             if (orderDetail == null)
                 throw new WebMarketException("Order does not contain details with this product", nameof(productId));
             orderDetail.Quantity -= quantity;
-            if(orderDetail.Quantity == 0)
+            if (orderDetail.Quantity == 0)
                 _unitOfWork.OrderDetailRepository.Delete(orderDetail);
             else if (orderDetail.Quantity < 0)
                 throw new WebMarketException("Trying to remove too much products", nameof(quantity));
@@ -226,7 +221,7 @@ namespace BLL.Services
         {
             var takenFromDb = await _unitOfWork.OrderRepository.GetByIdWithDetailsAsync(orderId);
             decimal toPay = 0;
-            if(takenFromDb == null)
+            if (takenFromDb == null)
                 throw new WebMarketException("Order with this id not found", nameof(orderId));
 
             if (takenFromDb.OrderDetails == null)

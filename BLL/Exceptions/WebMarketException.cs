@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace BLL.Exceptions
 {
     [Serializable]
-    public class WebMarketException:Exception
+    public class WebMarketException : Exception
     {
         private readonly string _parameterCausedException;
         public string ParameterCausedException => _parameterCausedException;

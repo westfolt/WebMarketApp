@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace BLL.Dto
 {
-    public class ProductCategoryDto :IValidatableObject
+    public class ProductCategoryDto : IValidatableObject
     {
         public Guid Id { get; set; }
         public string CategoryName { get; set; }
@@ -14,8 +13,8 @@ namespace BLL.Dto
         {
             List<ValidationResult> errors = new List<ValidationResult>();
 
-            if(string.IsNullOrWhiteSpace(CategoryName))
-                errors.Add(new ValidationResult("Category name is null or empty", new List<string>() {"CategoryName"}));
+            if (string.IsNullOrWhiteSpace(CategoryName))
+                errors.Add(new ValidationResult("Category name is null or empty", new List<string>() { "CategoryName" }));
 
             return errors;
         }

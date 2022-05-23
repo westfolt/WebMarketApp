@@ -1,12 +1,11 @@
-﻿using System;
+﻿using BLL.Dto;
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using BLL.Dto;
 
 namespace BLL.Interfaces
 {
-    internal interface IProductService :ICrud<ProductDto>
+    public interface IProductService : ICrud<ProductDto>
     {
         Task<IEnumerable<ProductDto>> GetByFilterAsync(FilterSearchDto filterSearch);
         Task<IEnumerable<ProductCategoryDto>> GetAllProductCategoriesAsync();

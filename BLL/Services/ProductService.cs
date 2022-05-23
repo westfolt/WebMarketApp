@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using BLL.Dto;
 using BLL.Exceptions;
 using BLL.Interfaces;
 using BLL.Validation;
 using DAL.Entities;
 using DAL.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class ProductService:IProductService
+    public class ProductService : IProductService
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -102,8 +101,8 @@ namespace BLL.Services
 
         public async Task<IEnumerable<ProductDto>> GetByFilterAsync(FilterSearchDto filterSearch)
         {
-            if(filterSearch == null)
-                throw new WebMarketException("Search filter is null",nameof(filterSearch));
+            if (filterSearch == null)
+                throw new WebMarketException("Search filter is null", nameof(filterSearch));
 
             var takenFromDb = await GetAllAsync();
             if (filterSearch.CategoryId != null)

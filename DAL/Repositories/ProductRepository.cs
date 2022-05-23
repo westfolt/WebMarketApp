@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DAL.Data;
+﻿using DAL.Data;
 using DAL.Entities;
 using DAL.Exceptions;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class ProductRepository:IProductRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly WebMarketDbContext _db;
 
@@ -32,7 +31,7 @@ namespace DAL.Repositories
 
         public Task AddAsync(Product entity)
         {
-            if(entity == null)
+            if (entity == null)
                 throw new ArgumentNullException(nameof(entity), "Given product is null");
 
             return AddAsyncInternal(entity);
